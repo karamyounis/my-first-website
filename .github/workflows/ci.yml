@@ -1,0 +1,31 @@
+name: Project Testing Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-project:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Smoke Test
+      run: |
+        if [ -f scripts/smoke-test.js ]; then
+          node scripts/smoke-test.js
+        else
+          echo "No smoke test file found, skipping..."
+        fi
