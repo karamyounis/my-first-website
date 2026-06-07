@@ -1,0 +1,37 @@
+name: Project Testing Pipeline
+
+# متى يشتغل هذا السير؟ (عند عمل push أو pull request على فرع main)
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-project:
+    # السير سيقوم بفتح جهاز كمبيوتر افتراضي (سيرفر) بنظام أوبونتو لتشغيل كودك
+    runs-on: ubuntu-latest
+
+    steps:
+    # الخطوة 1: نسخ كود مشروعك داخل السيرفر الافتراضي
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # الخطوة 2: تثبيت البيئة البرمجية (Node.js) لتشغيل المشروع
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    # الخطوة 3: تثبيت الحزم والمكتبات الخاصة بمشروعك (الموجودة في package.json)
+    - name: Install dependencies
+      run: npm install
+
+    # الخطوة 4: تشغيل اختبار فحص للتأكد أن المشروع سليم
+    - name: Run Smoke Test
+      run: |
+        if [ -f scripts/smoke-test.js ]; then
+          node scripts/smoke-test.js
+        else
+          echo "No smoke test file found, skipping..."
+        fi
