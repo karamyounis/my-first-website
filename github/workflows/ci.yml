@@ -19,25 +19,32 @@ jobs:
       with:
         node-version: '20'
 
-    # لو ملف package.json موجود، هيعمل install، لو مش موجود هيعدي الخطوة بدون خطأ
     - name: Install dependencies
       run: |
         if [ -f package.json ]; then
           npm install
-        elif [ -f need-you-to-make-a-simple/package.json ]; then
-          cd need-you-to-make-a-simple && npm install
         else
-          echo "No package.json found, creating a temporary one..."
-          npm init -y
+          cd need-you-to-make-a-simple && npm install
         fi
 
-    # تشغيل الفحص الذكي وتخطي الأخطاء للتجربة
-    - name: Run Smoke Test
+    # الخطوة السحرية: تشغيل السيرفر في الخلفية والانتظار حتى يفتح بورت 3000
+    - name: Start Server & Run Smoke Test
       run: |
+        # تشغيل المشروع في الخلفية باستخدام & عشان الـ Pipeline ما يقفش مكانه
+        if [ -f scripts/start-all.js ]; then
+          node scripts/start-all.js &
+        elif [ -f need-you-to-make-a-simple/scripts/start-all.js ]; then
+          node need-you-to-make-a-simple/scripts/start-all.js &
+        else
+          npm start &
+        fi
+        
+        # انتظر 5 ثوانٍ كاملة حتى يقوم السيرفر ويفتح البورت بنجاح
+        sleep 5
+        
+        # الآن شغل ملف الفحص والسريرفر مفتوح
         if [ -f scripts/smoke-test.js ]; then
           node scripts/smoke-test.js
-        elif [ -f need-you-to-make-a-simple/scripts/smoke-test.js ]; then
-          node need-you-to-make-a-simple/scripts/smoke-test.js
         else
-          echo "Smoke test passed successfully by default!"
+          node need-you-to-make-a-simple/scripts/smoke-test.js
         fi
