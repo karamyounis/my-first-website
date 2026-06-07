@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CourseHub Demo</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">C</span>
+        <span>CourseHub</span>
+      </div>
+      <nav aria-label="Main">
+        <a class="active" href="#">Catalog</a>
+        <a href="#">My Learning</a>
+        <a href="#">Teams</a>
+        <a href="#">Reports</a>
+      </nav>
+      <div class="service-panel">
+        <p>Services</p>
+        <div id="serviceStatus" class="service-list"></div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Microservices demo</p>
+          <h1>Course marketplace</h1>
+        </div>
+        <div id="learnerBadge" class="learner-badge">Loading learner</div>
+      </header>
+
+      <section class="toolbar" aria-label="Course filters">
+        <div class="search-box">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="React, data, design...">
+        </div>
+        <div id="categoryTabs" class="tabs"></div>
+      </section>
+
+      <section class="metrics" aria-label="Catalog metrics">
+        <article>
+          <span id="courseCount">0</span>
+          <p>Courses</p>
+        </article>
+        <article>
+          <span id="studentCount">0</span>
+          <p>Learners reached</p>
+        </article>
+        <article>
+          <span id="enrolledCount">0</span>
+          <p>Enrolled</p>
+        </article>
+      </section>
+
+      <section id="courseGrid" class="course-grid" aria-live="polite"></section>
+    </main>
+
+    <dialog id="courseDialog">
+      <div class="dialog-shell">
+        <button id="closeDialog" class="icon-button" aria-label="Close">x</button>
+        <div id="courseDetail"></div>
+      </div>
+    </dialog>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

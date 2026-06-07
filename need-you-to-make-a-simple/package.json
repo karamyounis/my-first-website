@@ -1,0 +1,11 @@
+{
+  "name": "coursehub-microservices-demo",
+  "version": "1.0.0",
+  "description": "A simple Udemy-style microservices web app demo built with Node.js and static frontend assets.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/start-all.js",
+    "check": "node scripts/smoke-test.js"
+  }
+}
